@@ -1,5 +1,6 @@
 [package]
 name = "fernico"
+description = "Store expenses"
 version = "0.1.0"
 authors = ["Julio Biason <julio.biason@pm.me>"]
 edition = "2018"
@@ -8,3 +9,5 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33"
+rust_decimal = "1.13"
+chrono = "0.4"

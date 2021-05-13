@@ -16,9 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-mod args;
-mod commands;
-
-fn main() {
-    args::cli();
+/// Trait used to define commands.
+pub trait Command {
+    fn execute(&self);
 }

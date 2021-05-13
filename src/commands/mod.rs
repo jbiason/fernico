@@ -15,10 +15,5 @@
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-mod args;
-mod commands;
-
-fn main() {
-    args::cli();
-}
+mod add_expense;
+mod interface;
