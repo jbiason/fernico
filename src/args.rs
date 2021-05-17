@@ -24,8 +24,20 @@ use clap::App;
 use clap::Arg;
 use clap::ArgMatches;
 use clap::SubCommand;
+use rust_decimal::prelude::*;
 
-pub(crate) fn cli() {
+use crate::commands::add_expense::AddExpense;
+use crate::commands::interface::Command;
+
+/// Errors in the CLI parsing
+pub enum CliErrors {
+    /// Request to set a value without a value
+    ValueIsRequired,
+    /// There is no such command
+    NoSuchCommand,
+}
+
+pub(crate) fn cli() -> Result<Box<dyn Command>, CliErrors> {
     let interface = App::new(crate_name!())
         .version(crate_version!())
         .author(crate_authors!())
@@ -50,22 +62,31 @@ pub(crate) fn cli() {
         ("expense", Some(expense_arguments)) => {
             parse_expenses(expense_arguments)
         }
-        _ => {}
+        _ => Err(CliErrors::NoSuchCommand),
     }
 }
 
-fn parse_expenses(args: &ArgMatches) {
-    println!("{:?}", args);
+fn parse_expenses(args: &ArgMatches) -> Result<Box<dyn Command>, CliErrors> {
     match args.subcommand() {
         ("add", Some(params)) => {
-            let value = params.value_of("value").unwrap(); // ok_or(Errors)
-            let tags = params.values_of("tags").unwrap();
-            let date = params.value_of("date").ok_or("Today");
-            println!(
-                "Add expense on {:?}, of {:?}, with tags {:?}",
-                date, value, tags
+            let value =
+                params.value_of("value").ok_or(CliErrors::ValueIsRequired)?;
+            let tags = params.values_of("tags").map_or_else(
+                || vec![],                                       /* else */
+                |values| values.map(|val| val.into()).collect(), /* map */
             );
+            let date = params.value_of("date").unwrap_or("Today");
+            log::debug!(
+                "Add expense on {:?}, of {:?}, with tags {:?}",
+                date,
+                value,
+                tags
+            );
+            Ok(Box::new(AddExpense::new(
+                Decimal::from_str(value).unwrap(),
+                tags,
+            )))
         }
-        _ => {}
+        _ => Err(CliErrors::NoSuchCommand),
     }
 }

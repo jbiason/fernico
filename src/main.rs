@@ -20,5 +20,6 @@ mod args;
 mod commands;
 
 fn main() {
+    env_logger::init();
     args::cli();
 }
