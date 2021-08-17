@@ -16,7 +16,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use crate::commands::interface::Command;
+use crate::interface::Command;
 use chrono::Date;
 use chrono::Utc;
 use rust_decimal::prelude::*;
