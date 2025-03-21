@@ -1,0 +1,36 @@
+CREATE TABLE IF NOT EXISTS account (
+	id CHAR(10) PRIMARY KEY NOT NULL,
+	name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS entry (
+	id INTEGER PRIMARY KEY NOT NULL,
+	day INTEGER NOT NULL,
+	month INTEGER NOT NULL,
+	year INTEGER NOT NULL,
+	account CHAR(10) NOT NULL,
+	credit DECIMAL(15,2),
+	debit DECIMAL(15,2),
+	FOREIGN KEY (account) REFERENCES account(id)
+);
+
+CREATE TABLE IF NOT EXISTS balance (
+	month INTEGER NOT NULL,
+	year INTEGER NOT NULL,
+	previous_credit DECIMAL(16, 2) NOT NULL,
+	previous_debit DECIMAL(16, 2) NOT NULL,
+	credit DECIMAL(16, 2) NOT NULL,
+	debit DECIMAL(16, 2) NOT NULL,
+	PRIMARY KEY (month, year)
+);
+
+CREATE TABLE IF NOT EXISTS acc_balance (
+	account CHAR(10) NOT NULL,
+	month INTEGER NOT NULL,
+	year INTEGER NOT NULL,
+	previous_credit DECIMAL(16,2) NOT NULL,
+	previous_debit DECIMAL(16,2) NOT NULL,
+	credit DECIMAL(16, 2) NOT NULL,
+	debit DECIMAL(16, 2) NOT NULL,
+	PRIMARY KEY (account, month, year)
+);
