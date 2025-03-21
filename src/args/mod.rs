@@ -2,7 +2,7 @@
 
 use std::path::PathBuf;
 
-use clap::{Args, Parser, Subcommand};
+use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -19,23 +19,5 @@ pub struct Cli {
 pub enum Commands {
     /// Account management
     #[command(subcommand)]
-    Account(AccountCommands),
-}
-
-#[derive(Subcommand)]
-pub enum AccountCommands {
-    /// Add a new account
-    Add(AccountArgs),
-
-    /// Delete an account
-    Del,
-}
-
-#[derive(Args)]
-pub struct AccountArgs {
-    /// The short name for the account, used as an identifier.
-    pub short: String,
-
-    /// Full name of the account.
-    pub name: String,
+    Account(crate::accounts::Actions),
 }
