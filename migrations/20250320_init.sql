@@ -5,32 +5,37 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS entry (
 	id INTEGER PRIMARY KEY NOT NULL,
-	day INTEGER NOT NULL,
-	month INTEGER NOT NULL,
-	year INTEGER NOT NULL,
+	calendar CHAR(10) NOT NULL,		-- event date ("calendar" to avoid mixing with date() function)
 	account CHAR(10) NOT NULL,
 	credit DECIMAL(15,2),
 	debit DECIMAL(15,2),
-	FOREIGN KEY (account) REFERENCES account(id)
+	note TEXT,
+	CONSTRAINT fk_account
+		FOREIGN KEY (account)
+		REFERENCES account(id)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS balance (
-	month INTEGER NOT NULL,
-	year INTEGER NOT NULL,
+	calendar CHAR(10) NOT NULL,
 	previous_credit DECIMAL(16, 2) NOT NULL,
 	previous_debit DECIMAL(16, 2) NOT NULL,
 	credit DECIMAL(16, 2) NOT NULL,
 	debit DECIMAL(16, 2) NOT NULL,
-	PRIMARY KEY (month, year)
+	PRIMARY KEY (calendar)
 );
 
 CREATE TABLE IF NOT EXISTS acc_balance (
 	account CHAR(10) NOT NULL,
-	month INTEGER NOT NULL,
-	year INTEGER NOT NULL,
+	calendar CHAR(10) NOT NULL,
 	previous_credit DECIMAL(16,2) NOT NULL,
 	previous_debit DECIMAL(16,2) NOT NULL,
 	credit DECIMAL(16, 2) NOT NULL,
 	debit DECIMAL(16, 2) NOT NULL,
-	PRIMARY KEY (account, month, year)
+	CONSTRAINT pk_acc_balance
+		PRIMARY KEY (account, calendar),
+	CONSTRAINT fk_account
+		FOREIGN KEY (account)
+		REFERENCES account(id)
+		ON DELETE CASCADE
 );
