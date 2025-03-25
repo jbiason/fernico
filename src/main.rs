@@ -2,8 +2,9 @@ use clap::Parser;
 use sqlx::sqlite::SqliteConnectOptions;
 use sqlx::sqlite::SqlitePool;
 
-mod accounts;
+pub mod accounts;
 mod args;
+mod import;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -18,5 +19,10 @@ async fn main() {
 
     match args.command {
         args::Commands::Account(action) => accounts::run(action, &pool).await,
+        args::Commands::Import(args) => import::run(&args, &pool).await,
+        args::Commands::Export => todo!(),
+        args::Commands::Credit(credit_args) => todo!(),
+        args::Commands::Debit(debit_args) => todo!(),
+        args::Commands::Transfer(transfer_args) => todo!(),
     }
 }

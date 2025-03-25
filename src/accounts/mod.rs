@@ -8,12 +8,19 @@ use args::AddArgs;
 use sqlx::SqlitePool;
 
 #[derive(sqlx::FromRow)]
-struct Account {
+pub struct Account {
     id: String,
     name: String,
 }
 
 impl Account {
+    pub fn new(short: &str, name: &str) -> Self {
+        Self {
+            id: short.to_string(),
+            name: name.to_string(),
+        }
+    }
+
     pub async fn save(&self, pool: &SqlitePool) {
         let mut conn = pool.acquire().await.unwrap();
         sqlx::query("INSERT INTO account (id, name) VALUES ($1, $2)")
