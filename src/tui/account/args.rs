@@ -1,6 +1,6 @@
-//! Arguments for the Account commands.
-
 use clap::{Args, Subcommand};
+
+use crate::models::account::Account;
 
 #[derive(Subcommand)]
 pub enum Actions {
@@ -27,4 +27,10 @@ pub struct AddArgs {
 pub struct DelArgs {
     /// Identifier of the account to be deleted
     pub short: String,
+}
+
+impl From<AddArgs> for Account {
+    fn from(value: AddArgs) -> Self {
+        Account::new(&value.short, &value.name)
+    }
 }

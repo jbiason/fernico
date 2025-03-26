@@ -1,16 +1,9 @@
-//! Account stuff.
-
-mod args;
-
-pub use args::Actions;
-
-use args::AddArgs;
 use sqlx::SqlitePool;
 
 #[derive(sqlx::FromRow)]
 pub struct Account {
-    id: String,
-    name: String,
+    pub id: String,
+    pub name: String,
 }
 
 impl Account {
@@ -56,26 +49,3 @@ impl Account {
     }
 }
 
-impl From<AddArgs> for Account {
-    fn from(value: AddArgs) -> Self {
-        Self {
-            id: value.short,
-            name: value.name,
-        }
-    }
-}
-
-pub async fn run(action: args::Actions, pool: &SqlitePool) {
-    match action {
-        Actions::Add(args) => Account::from(args).save(pool).await,
-        Actions::Del(args) => {
-            let account = Account::get(&args.short, pool).await;
-            account.delete(pool).await;
-        }
-        Actions::List => {
-            for account in Account::all(pool).await {
-                println!("{:>10} - {}", &account.id, &account.name);
-            }
-        }
-    }
-}

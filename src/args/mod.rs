@@ -1,21 +1,3 @@
-//! Command line arguments
-
-use std::path::PathBuf;
-
-use clap::{Args, Parser, Subcommand};
-use sqlx::types::Decimal;
-
-#[derive(Parser)]
-#[command(version, about)]
-pub struct Cli {
-    // Path where the database will be saved
-    #[arg(default_value = "./", env = "FERNICO_CONFIG_PATH")]
-    pub base_dir: PathBuf,
-
-    #[command(subcommand)]
-    pub command: Commands,
-}
-
 #[derive(Subcommand)]
 pub enum Commands {
     /// Account management
