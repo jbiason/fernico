@@ -3,16 +3,29 @@ CREATE TABLE IF NOT EXISTS account (
 	name TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS entry (
+CREATE TABLE IF NOT EXISTS category (
+	id INTEGER PRIMARY KEY NOT NULL,
+	parent INTEGER,
+	name TEXT NOT NULL
+);
+CREATE INDEX idx_name on category (name);
+
+CREATE TABLE IF NOT EXISTS movement (
 	id INTEGER PRIMARY KEY NOT NULL,
 	calendar CHAR(10) NOT NULL,		-- event date ("calendar" to avoid mixing with date() function)
 	account CHAR(10) NOT NULL,
+	category INTEGER NOT NULL,
 	credit DECIMAL(15,2),
 	debit DECIMAL(15,2),
 	note TEXT,
+	related INTEGER,							-- in case the movement relates to another, like a transfer
 	CONSTRAINT fk_account
 		FOREIGN KEY (account)
 		REFERENCES account(id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_category
+		FOREIGN KEY (category)
+		REFERENCES category(id)
 		ON DELETE CASCADE
 );
 
