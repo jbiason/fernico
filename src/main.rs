@@ -58,7 +58,7 @@ async fn main() {
 
     match args.command {
         Commands::Account(action) => tui::account::run(action, &pool).await,
-        Commands::Import(import_args) => todo!(),
+        Commands::Import(import_args) => tui::import::run(&import_args, &pool).await,
         Commands::Export(export_args) => todo!(),
         Commands::Credit(credit_args) => todo!(),
         Commands::Debit(debit_args) => todo!(),
