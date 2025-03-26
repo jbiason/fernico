@@ -3,7 +3,7 @@ use clap::{Args, Subcommand};
 use crate::models::account::Account;
 
 #[derive(Subcommand)]
-pub enum Actions {
+pub enum AccountArgs {
     /// Add a new account
     Add(AddArgs),
 
