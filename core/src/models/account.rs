@@ -34,7 +34,7 @@ impl Account {
 
     pub async fn delete(&self, pool: &SqlitePool) {
         let mut conn = pool.acquire().await.unwrap();
-        sqlx::query("DELETE FROM account WHERE id = %1")
+        sqlx::query("DELETE FROM account WHERE id = $1")
             .bind(&self.id)
             .execute(&mut *conn)
             .await

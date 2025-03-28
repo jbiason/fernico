@@ -1,9 +1,17 @@
-[package]
+[workspace]
+members = ["core"]
+default-members = ["core"]
+resolver = "2"
+
+[workspace.package]
 name = "fernico"
 version = "0.1.0"
 edition = "2021"
+authors = ["Julio Biason <julio.biason@pm.me>"]
 
-[dependencies]
-clap = { version = "4.5.32", features = ["derive", "env"] }
-sqlx = { version = "0.8", features = [ "runtime-tokio", "sqlite", "rust_decimal" ] }
+[workspace.dependencies]
 tokio = { version = "1.44.1", features = ["rt", "macros"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
